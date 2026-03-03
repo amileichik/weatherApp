@@ -20,36 +20,63 @@ extension URLSession: URLSessionProtocol {}
 
 final class NetworkService: NetworkServiceProtocol {
     
-    private let apiKey = "905b24b283a4f10b7dd62dd00e3c8692"
+    private let apiKey: String
     private let session: URLSessionProtocol
     
-    init(session: URLSessionProtocol) {
+    init(session: URLSessionProtocol = URLSession.shared) {
         self.session = session
+        
+        guard
+            let path = Bundle.main.path(forResource: "config", ofType: "plist"),
+            let dict = NSDictionary(contentsOfFile: path),
+            let key = dict["OPENWEATHER_API_KEY"] as? String,
+            !key.isEmpty
+        else {
+            fatalError("API Key not found in config.plist or is empty")
+        }
+        
+        self.apiKey = key
     }
     
     func fetchWeather(lat: Double, lon: Double) async throws -> WeatherResponse {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(apiKey)&units=metric"
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
+        var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")!
+        components.queryItems = [
+            URLQueryItem(name: "lat", value: "\(lat)"),
+            URLQueryItem(name: "lon", value: "\(lon)"),
+            URLQueryItem(name: "appid", value: apiKey),
+            URLQueryItem(name: "units", value: "metric")
+        ]
+        guard let url = components.url else { throw NetworkError.invalidURL }
+        print("Request URL: \(url)") // debug
+        
         let (data, response) = try await session.data(from: url)
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.badResponse((response as? HTTPURLResponse)?.statusCode ?? -1)
-        }
+        try validate(response: response)
         return try JSONDecoder().decode(WeatherResponse.self, from: data)
     }
     
     func fetchWeather(cityName: String) async throws -> WeatherResponse {
-        let encodedName = cityName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? cityName
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(encodedName)&appid=\(apiKey)&units=metric"
-        guard let url = URL(string: urlString) else { throw NetworkError.invalidURL }
+        var components = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")!
+        components.queryItems = [
+            URLQueryItem(name: "q", value: cityName),
+            URLQueryItem(name: "appid", value: apiKey),
+            URLQueryItem(name: "units", value: "metric")
+        ]
+        guard let url = components.url else { throw NetworkError.invalidURL }
+        
         let (data, response) = try await session.data(from: url)
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.badResponse((response as? HTTPURLResponse)?.statusCode ?? -1)
-        }
+        try validate(response: response)
         return try JSONDecoder().decode(WeatherResponse.self, from: data)
     }
+    
+    // MARK: - Private
+    
+    private func validate(response: URLResponse) throws {
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.badResponse(-1)
+        }
+        guard (200...299).contains(httpResponse.statusCode) else {
+            print("HTTP Error: \(httpResponse.statusCode)")
+            throw NetworkError.badResponse(httpResponse.statusCode)
+        }
+    }
 }
-
-
-
-
-

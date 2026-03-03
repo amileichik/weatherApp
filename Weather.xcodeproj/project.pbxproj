@@ -25,6 +25,7 @@
 		B4250A552F568F8C00A7A00A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4250A542F568F8C00A7A00A /* NetworkService.swift */; };
 		B4250A572F56904D00A7A00A /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4250A562F56904D00A7A00A /* NetworkError.swift */; };
 		B4250A5F2F56A4E100A7A00A /* WeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4250A5E2F56A4E100A7A00A /* WeatherTests.swift */; };
+		B4250A662F56ABE600A7A00A /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4250A652F56ABE600A7A00A /* config.plist */; };
 		B444421A2F529EF9005875A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44442192F529EF9005875A8 /* AppDelegate.swift */; };
 		B444421C2F529EF9005875A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B444421B2F529EF9005875A8 /* SceneDelegate.swift */; };
 		B44442232F529EFC005875A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B44442222F529EFC005875A8 /* Assets.xcassets */; };
@@ -62,6 +63,7 @@
 		B4250A562F56904D00A7A00A /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		B4250A5C2F56A4E100A7A00A /* WeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4250A5E2F56A4E100A7A00A /* WeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherTests.swift; sourceTree = "<group>"; };
+		B4250A652F56ABE600A7A00A /* config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
 		B44442162F529EF9005875A8 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B44442192F529EF9005875A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B444421B2F529EF9005875A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 			children = (
 				B4250A562F56904D00A7A00A /* NetworkError.swift */,
 				B4250A542F568F8C00A7A00A /* NetworkService.swift */,
+				B4250A652F56ABE600A7A00A /* config.plist */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B44442232F529EFC005875A8 /* Assets.xcassets in Resources */,
+				B4250A662F56ABE600A7A00A /* config.plist in Resources */,
 				B44442262F529EFC005875A8 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
